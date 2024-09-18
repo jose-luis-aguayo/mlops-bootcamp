@@ -8,7 +8,5 @@ COPY . /work_dir/train_pipeline
 
 RUN pip install --no-cache-dir --upgrade -r /work_dir/requirements.txt
 
-#RUN cd work_dir/ 
-
 CMD ["python", "train_pipeline/main.py"]
 
