@@ -225,7 +225,7 @@ def get_forecasting(DF, future_DF, model):
     # Add predictions to future_DF
     future_DF["Predicted_Income"] = future_predictions
 
-    return future_DF.astype({"date": str})[["date","Predicted_Income"]]
+    return future_DF
 
 
 def prepare_future_df(DF, future_DF):

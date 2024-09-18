@@ -18,5 +18,7 @@ def home():
 def predict():
     #TODO: add validation max_days = 15
     forecast = predict_pipeline()
-    response = parse_to_json(forecast)
+    response = (parse_to_json(forecast
+                             .astype({"date": str})
+                             [["date","Predicted_Income"]]))
     return JSONResponse(content=response)
