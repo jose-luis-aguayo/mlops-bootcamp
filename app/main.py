@@ -1,20 +1,22 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi.responses import JSONResponse
 from app.model.model import predict_pipeline
+import json
 
 app = FastAPI()
 
-class Request(BaseModel):
-    Input: str
-
-class Response(BaseModel):
-    forecast: str
+def parse_to_json(df):
+    res = df.to_json(orient="records")
+    parsed = json.loads(res)
+    return parsed
 
 @app.get("/")
 def home():
     return {"health_check": "OK", "model_version": ""}
 
-@app.post("/predict", response_model=Response)
-def predict(payload: Request):
-    forecast = predict_pipeline(payload.Input)
-    return {"forecast": forecast}    
+@app.post("/predict")
+def predict():
+    #TODO: add validation max_days = 15
+    forecast = predict_pipeline()
+    response = parse_to_json(forecast)
+    return JSONResponse(content=response)

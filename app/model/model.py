@@ -1,14 +1,17 @@
 import pickle
 import re
 from pathlib import Path
+import pandas as pd
+from train_pipeline.conf import DATASET_PATH, MODEL
+from train_pipeline.functions import load_model, get_n_future_days, get_forecasting, feature_engineering
 
-__version__ = "1.0.0"
 
-BASE_DIR = Path(__file__).resolve(strict=True).parent
 
-with open(f"{BASE_DIR}/forecasting_income_model.pkl", "rb") as f:
-    model = pickle.load(f)
+def predict_pipeline():
+    preprocessed_df = pd.read_csv(DATASET_PATH)
+    df = feature_engineering(preprocessed_df)
 
-def predict_pipeline(payload):
-    forecast = model.predict([payload])
-    return forecast[0]
+    model = load_model(MODEL)
+    dates_to_forecast = get_n_future_days(DF=df, n_days=15)
+    forecasting = get_forecasting(DF=df, future_DF=dates_to_forecast, model=model)
+    return  forecasting
