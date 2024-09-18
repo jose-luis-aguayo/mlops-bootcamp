@@ -5,9 +5,12 @@ import pandas as pd
 from train_pipeline.conf import DATASET_PATH, MODEL
 from train_pipeline.functions import load_model, get_n_future_days, get_forecasting, feature_engineering
 
+MAX_NUMBER_OF_DAYS_ALLOWED = 15
 
+def predict_pipeline(number_of_days):
+    if number_of_days > MAX_NUMBER_OF_DAYS_ALLOWED:
+        return pd.DataFrame({"error":"error"}, index=[0])
 
-def predict_pipeline():
     preprocessed_df = pd.read_csv(DATASET_PATH)
     df = feature_engineering(preprocessed_df)
 
